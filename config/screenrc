@@ -1,0 +1,6 @@
+
+hardstatus alwayslastline
+hardstatus string '%{wk}%?%-Lw%?%{=b kR}(%{W}%n*%f %t%?(%u)%?%{=b kR})%{= w}%?%+Lw%?%? %{g}]'
+
+
+#termcapinfo xterm* ti@:te@

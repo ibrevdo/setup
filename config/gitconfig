@@ -1,0 +1,26 @@
+[credential]
+    helper = cache --timeout=3600
+[core]
+    editor = vim
+    autocrlf = input
+    pager = less -FRSX
+[alias]
+    #HEAD           - a pointer to a last commit of current branch
+    #index          - local changes that were staged (by add )
+    #working dir    - all local changes, staged and not staged
+    d   = difftool --dir-diff           #diff between working directory and index (shows changes that are not staged yet)
+    dc  = difftool --dir-diff --cached  #diff between index and HEAD (staged vs last commit)
+    dh  = difftool --dir-diff HEAD      #diff between working directory and HEAD (all local changes)
+    lg = log --pretty=format:'%C(yellow)%h %Cred%ad %Cblue%an%Cgreen%d %Creset%s' --date=short
+    st = status
+[diff]
+    tool = meld
+[difftool]
+    prompt = false
+[difftool "meld"]
+    cmd = meld "$LOCAL" "$REMOTE"
+[merge]
+    tool = meld
+[mergetool]
+    cmd = meld $LOCAL $MERGED $REMOTE --output $MERGED
+

@@ -1,0 +1,355 @@
+
+set nocompatible
+filetype off
+
+"if filereadable(expand($IGOR_CONFIG_DIR)."/vim/user/plugins.vim")
+if filereadable(expand($IGOR_CONFIG_DIR)."/vim")
+	let g:my_vim_directory = $IGOR_CONFIG_DIR."/vim"
+	set runtimepath+=${IGOR_CONFIG_DIR}/vim,${IGOR_CONFIG_DIR}/vim/after
+	"so ${IGOR_CONFIG_DIR}/vim/user/plugins.vim
+"elseif filereadable(expand("~/.vim/user/plugins.vim"))
+else
+	let g:my_vim_directory = $HOME."/.vim"
+	"so ~/.vim/user/plugins.vim
+endif
+
+runtime user/start.vim
+runtime user/plugins.vim
+
+filetype plugin indent on
+syntax on
+
+let mapleader=","  "default leader is backslash \
+
+runtime user/misc_helpers.vim
+runtime user/plugins_config.vim
+runtime user/defx.vim
+runtime user/lsp/ale.vim
+"runtime user/lsp/lsc.vim
+"runtime user/lsp/lsp.vim
+"runtime user/lsp/languageclient.vim
+"runtime user/lsp/mucomplete.vim
+
+
+set backspace=indent,eol,start
+set scrolloff=1
+set shiftwidth=4    "Set number of spaces per auto indentation
+set tabstop=4
+set softtabstop=4
+set expandtab
+set smarttab        "At <Tab> at beginning line inserts spaces set in shiftwidth
+
+set nojoinspaces
+set autoindent
+set smartindent     "Do smart autoindenting when starting a new line
+"set mouse=n "enable mouse in normal mode only
+set ignorecase
+set smartcase
+set incsearch
+set hlsearch
+set breakindent
+set breakindentopt=shift:2
+set clipboard+=unnamedplus
+
+set encoding=utf-8
+set updatetime=300
+"set shortmess+=c    " dont pass messages to |ins-completion-menu|
+set shortmess-=S	" show search count
+"set signcolumn=yes
+set nojoinspaces
+
+set autoread
+"set nowrap
+set hidden
+set nu
+set relativenumber
+set showcmd
+set cmdheight=2     " give more space for displaying messages
+set history=100
+set laststatus=2
+set showtabline=2
+
+" mkdir ~/.vim/.backup ~/.vim/.swp ~/.vim/.undo
+"set undodir=~/.vim/.undo//
+"set backupdir=~/.vim/.backup//
+"set directory=~/.vim/.swp//
+
+set nowritebackup
+set nobackup
+set noswapfile
+
+" Enable histogram diff
+if has('nvim-0.3.2') || has("patch-8.1.0360")
+    set diffopt=filler,internal,algorithm:histogram,indent-heuristic
+endif
+
+"let c_space_errors=1
+
+set viewoptions-=options
+set sessionoptions-=options
+set guioptions-=T
+set guioptions-=m
+
+"set path+=**
+set path=.,,**
+
+set wildmenu
+"set wildmode=longest:list,full
+set wildmode=list:full
+set wildignore=*.swp,*.bak
+set wildignore+=*.o,*.pyc,*.class,*.so,*.a
+set wildignore+=*/Debug/*,*/build/*
+set wildignore+=*/.git/**/*,*/.hg/**/*,*/.svn/**/*
+set wildignore+=tags,TAGS,.tags,.TAGS
+set wildignore+=*.tar.*
+set wildignore+=*/vim/pack/**/*
+set wildignore+=*/vim/plugged/**/*
+set wildignore+=*/.ccls*/**/*
+set wildignorecase
+
+set complete-=i
+"set complete+=kspell
+set completeopt-=preview   "default option before using vim-lsc
+"set completeopt=menu,menuone,noinsert,noselect
+
+"diff mode
+if &diff
+    set diffopt+=iwhite
+endif
+
+set pumheight=10
+"set completeopt=menuone,longest
+
+set mouse+=a
+" tmux knows the extended mouse mode
+set ttymouse=xterm2
+
+
+set statusline=
+set statusline+=%f%m%=
+"set statusline+=%{expand('%:t')}%m%=
+set statusline+=\ %{ObsessionStatus('(S)','($)')}
+set statusline+=\ %y
+"set statusline+=\ (%{&fileencoding?&fileencoding:&encoding}\,%{&fileformat})
+set statusline+=\ Col:%2c\ %3l\/%L\ %2P
+
+au FileType sh setlocal nofoldenable foldmethod=indent
+au FileType c setlocal nofoldenable foldmethod=indent commentstring=//\ %s
+au FileType cpp setlocal nofoldenable foldmethod=indent commentstring=//\ %s
+au FileType python setlocal nofoldenable foldmethod=indent
+au FileType java setlocal nofoldenable foldmethod=indent
+
+" vim-cpp-modern highlihgting configurations
+"let g:cpp_function_highlight = 1
+"let g:cpp_simple_highlight = 1
+
+set tags+=~/.vim/tags/libc,.tags,./.tags
+
+" netrw options
+"let g:netrw_banner = 0
+
+
+"--------------------- UI ----------------------------
+
+function! LinterStatus() abort
+    let l:counts = ale#statusline#Count(bufnr(''))
+
+    let l:all_errors = l:counts.error + l:counts.style_error
+    let l:all_non_errors = l:counts.total - l:all_errors
+
+    return l:counts.total == 0 ? 'OK' : printf(
+    \   '%dW %dE',
+    \   all_non_errors,
+    \   all_errors
+    \)
+endfunction
+
+" augroup BgHighlight
+"     autocmd!
+"     autocmd WinEnter * set cursorline
+"     autocmd WinLeave * set nocursorline
+" 	autocmd ColorScheme * hi clear CursorLine
+" augroup END
+
+
+set signcolumn=yes
+
+
+if ! has("gui_running")
+    set background=dark
+	set mouse+=a
+
+    function! MyHighlights() abort
+        "highlight Search guibg=darkgray
+        hi IncSearch ctermbg=131 ctermfg=235 cterm=NONE guibg=#af5f5f guifg=#262626 gui=NONE
+    endfunction
+
+    augroup MyColors
+        autocmd!
+        autocmd ColorScheme * call MyHighlights()
+    augroup END
+
+""""""""""" SCREEN
+    " for screen use folowing
+    " colorescheme default
+    " do not set termguicolors
+
+	" enable mouse in screen
+	"if &term =~ '^screen'
+		" tmux knows the extended mouse mode
+		"set ttymouse=xterm2
+	"endif
+
+""""""""""" TMUX
+    if exists('$TARGET') && ! exists('$TMUX')
+        colorscheme default
+    else
+        set termguicolors
+        "colorscheme apprentice
+        "colorscheme PaperColor
+        "colorscheme material
+        "colorscheme molokai
+        colorscheme solarized8
+        
+        "set cursorline
+
+        " needed for true colors inside tmux
+        set t_8f=[38;2;%lu;%lu;%lum
+        set t_8b=[48;2;%lu;%lu;%lum
+
+		set mouse+=a
+		set ttymouse=xterm2
+    endif
+else
+    set lines=40 columns=100
+    "set guifont=DejaVu\ Sans\ Mono\ 11
+    set guifont=Hack\ Nerd\ Font\ 11
+
+    set background=dark
+    "colorscheme morning
+    "colorscheme PaperColor
+    "colorscheme material
+
+    colorscheme solarized8
+
+    set nowrap
+
+endif
+
+"------------------ MAPPINGS ------------------------
+
+nnoremap <C-l>			:noh<CR><C-l>
+"nnoremap <bs>           :ls<CR>:b<Space>
+nnoremap <silent> <F2>  :bp \| sp \| bn \| bw <CR>
+"nnoremap <F3>			:let @/='\<<C-R>=expand("<cword>")<CR>\>'<CR>:set hls!<CR>
+
+set pastetoggle=<F10>
+
+" toggle quickfix window
+"nnoremap <expr> <C-q>   empty(filter(getwininfo(), 'v:val.quickfix')) ? ':silent copen<CR>' : ':silent cclose<CR>'
+
+vnoremap <silent> y		y:let @+=@"<cr>
+"nnoremap <space>		zA
+
+" Saner command-line history
+cnoremap <c-n>  <down>
+cnoremap <c-p>  <up>
+
+" move vertically by visual line
+nnoremap j gj
+nnoremap k gk
+
+" useful mappings to open current file in new tab. and then close after
+" finished.
+" useful when needed to open current file new whole window
+nnoremap t.				:tabedit %<cr>
+nnoremap tc				:tabclose<cr>
+
+nnoremap <C-j>          :bprevious<cr>
+nnoremap <C-k>          :bnext<cr>
+nmap <C-left>           :tabprevious<cr>
+nmap <C-right>          :tabnext<cr>
+
+" find buffer
+nnoremap	<leader>fb	:ls<CR>:b<space>
+
+" find files
+nnoremap <leader>ff :find *
+nnoremap <leader>fs :sfind *
+nnoremap <leader>fv :vert sfind *
+nnoremap <leader>ft :tabfind *
+
+" Search multiple files
+nnoremap    <leader>gs	:noautocmd vimgrep //gj **/*<bar>cw<S-left><S-left><right>
+nnoremap    <leader>gg  :silent grep  <bar>redr!<bar>cw<S-left><left>
+
+" Search and replace in all files in the quicklist
+nnoremap    <leader>gr  :cfdo %s///gc <bar>update<S-left><left><left><left><left>
+" Undo previous action
+nnoremap    <leader>ru :cfdo undo \| update
+
+"nnoremap <silent> <TAB>      <C-w>     " window navigation starts with tab
+"nnoremap <silent> <TAB><TAB> <C-w>w    " jump to next window with tab,tab
+
+
+" list all c functions in current file
+"nnoremap <leader>f          :g/^\S\+.*(.*<CR>
+
+" save and reload folding
+"autocmd BufWinLeave *.* mkview
+"autocmd BufWinEnter *.* silent loadview
+
+" sessions
+"let g:sessions_dir = '~/.vim/sessions/'
+"exec 'nnoremap <Leader>ss :Obsession ' . g:sessions_dir . '<C-D>'
+"exec 'nnoremap <Leader>sr :so ' . g:sessions_dir . '<C-D>'
+
+nnoremap <leader>W          :w !sudo tee % > /dev/null
+
+"autocmd FileType c,cpp nnoremap <F5> :silent make %:r \|:redraw!\|cc<CR>
+autocmd FileType c,cpp nnoremap <F5> :silent make %< <bar> !make %< && ./%< <cr>
+
+"--------------------- MY FUNCTIONS ---------------------
+
+command! CdNotes    cd ~/igorba/git/setup/notes/
+command! CdConfig    cd ~/igorba/git/setup/config/
+command! WikiUpdate !clear; ~/git/notes/site_rebuild.sh
+command! CmakeRebuild !clear; rm -r build; mkdir build; cd build; cmake -DCAMKE_RULE_MESSAGES:BOOL=off .. <CR>
+
+function! SwitchSourceHeader()
+  if (expand ("%:e") == "cpp")
+	find %:t:r.h
+  else
+	find %:t:r.cpp
+  endif
+endfunction
+au FileType c,cpp nmap <silent> <F4> :call SwitchSourceHeader()<CR>
+
+function! RunMake()
+	wall
+	if filereadable("./CMakeLists.txt") && filereadable("./build/Makefile")
+		silent make '--no-print-directory -C build' | redraw! | cc
+	elseif filereadable("./Makefile") || filereadable("./makefile")
+		silent make | redraw! | cc
+	elseif (&filetype == "cpp") || (&filetype == "c")
+		silent make %< | redraw! | cc
+	endif
+endfunction
+
+function! RunCMake()
+	wall
+	if filereadable("./CMakeLists.txt")
+		"silent !mkdir -p build; cd build; cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 ..; cd -;
+		silent !cmake -H. -Boutput/build
+		silent make -C ./output/build | redraw! | cc
+	endif
+endfunction
+
+function! Rebuild()
+	silent !rm -r build
+	call RunCMake()
+endfunction
+
+
+nmap <silent> <F6> :call RunCMake()<CR>
+nmap <S-F6> :call Rebuild()<CR>
