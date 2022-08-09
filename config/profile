@@ -1,0 +1,29 @@
+# ~/.profile: executed by the command interpreter for login shells.
+# This file is not read by bash(1), if ~/.bash_profile or ~/.bash_login
+# exists.
+
+# the default umask is set in /etc/profile; for setting the umask
+# for ssh logins, install and configure the libpam-umask package.
+#umask 022
+
+# igor: this file is sourced when the user is logged in (before startx).
+# but after startx, some of the configuration is lost,
+# so I moved all config to .bashrc which is sourced every time the terminal emulator of X
+# is started.
+# the only purpose of this file, is to source .bashrc, when logining into runlevel 3 or
+# when connecting to this computer with ssh
+
+#export MESA_LOADER_DRIVER_OVERRIDE=i965
+
+# if running bash
+if [ -n "$BASH_VERSION" ]; then
+    # include .bashrc if it exists
+    if [ -f "$HOME/.bashrc" ]; then
+		. "$HOME/.bashrc"
+    fi
+fi
+
+# moved to .Xmodmap file
+# map CapsLock to the Esc
+# xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+

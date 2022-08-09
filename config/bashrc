@@ -1,0 +1,33 @@
+
+# Add sbin directories to PATH.  This is useful on systems that have sudo
+echo $PATH | grep -Eq "(^|:)/sbin(:|)"     || export PATH=$PATH:/sbin
+echo $PATH | grep -Eq "(^|:)/usr/sbin(:|)" || export PATH=$PATH:/usr/sbin
+
+# Add user dirctories to the path
+if [[ ! "$PATH" == *"$HOME"/.local/bin* ]]; then
+	export PATH=~/.local/bin:$PATH
+fi
+
+# Add user dirctories to the path
+if [[ ! "$PATH" == *"$HOME"/tools/scripts* ]]; then
+    export PATH=$PATH:${HOME}/tools/scripts
+fi
+
+# Add user dirctories to the path
+# if [[ ! "$PATH" == *"$HOME"/tools/llvm/bin* ]]; then
+#     export PATH=$PATH:${HOME}/tools/llvm/bin
+# fi
+
+# this part is sourced by /etc/profile, but somehow looses it's effect during startx
+# so need to source it again
+if [ -x /etc/profile.d/bash_completion.sh ];  then
+   . /etc/profile.d/bash_completion.sh
+fi
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+#. "$HOME/.cargo/env"
+
+if [ -d /home/mago/igorba/git/setup ]; then
+#export IGOR_SETUP_DIR=/home/mago/igorba/git/setup
+. /home/mago/igorba/git/setup/config/bash_config.sh
+fi

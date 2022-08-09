@@ -3,7 +3,7 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# enable color support of ls 
+# enable color support of ls
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 
@@ -34,37 +34,46 @@ if [[ -t 0 && $- = *i* ]]; then
     stty -ixon
 fi
 
-export PS1="\u@\h \[\e[32m\]\w \[\e[91m\]\$(parse_git_branch)\[\e[00m\]$ "
+export PS1="\u@\h \[\e[32m\]\w \[\e[91m\]\$(parse_git_branch)\[\e[00m\]\n$ "
 
-if [ -d "${IGOR_SETUP_DIR}" ]; then
-	export IGOR_CONFIG_DIR=${IGOR_SETUP_DIR}/config
+# fzf + ag configuration
+export FZF_DEFAULT_COMMAND='ag --nocolor -g ""'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_DEFAULT_OPTS='
+--color fg:242,bg:236,hl:65,fg+:15,bg+:239,hl+:108
+--color info:108,prompt:109,spinner:108,pointer:168,marker:168
+'
 
-	[ -f ~/.tmux.conf ] || ln -s "${IGOR_CONFIG_DIR}"/tmux.conf ~/.tmux.conf
-	[ -d ~/.vim ] || ln -s "${IGOR_CONFIG_DIR}"/vim ~/.vim
+#if [ -d "${IGOR_SETUP_DIR}" ]; then
+#	export IGOR_CONFIG_DIR=${IGOR_SETUP_DIR}/config
 
-    if [ -f ~/.fzf.bash ]; then
-        export FZF_DEFAULT_OPTS="
---no-mouse
---height 50% -1 --reverse --multi --inline-info
---preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300'
---bind='?:toggle-preview'
---bind='ctrl-a:select-all+accept'
---bind='ctrl-y:execute-silent(echo {+} | pbcopy)'
---bind 'ctrl-e:execute(echo {+} | xargs -o vim)'
-        "
-#--preview-window='right:hidden:wrap'
-        #export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
-        FD_OPTIONS="--follow --exclude .git --exclude node_modules"
-        # Use git-ls-files inside git repo, otherwise fd
-        export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fd --type f --type l $FD_OPTIONS"
-        export FZF_CTRL_T_COMMAND="fd $FD_OPTIONS"
-        export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
-    fi
-    export BAT_PAGER="less -R"
+#	[ -f ~/.tmux.conf ] || ln -s "${IGOR_CONFIG_DIR}"/tmux.conf ~/.tmux.conf
+#	[ -d ~/.vim ] || ln -s "${IGOR_CONFIG_DIR}"/vim ~/.vim
 
-else
-	export IGOR_CONFIG_DIR=~
-fi
+#    if [ -f ~/.fzf.bash ]; then
+#        export FZF_DEFAULT_OPTS="
+#--no-mouse
+#--height 50% -1 --reverse --multi --inline-info
+#--preview='[[ \$(file --mime {}) =~ binary ]] && echo {} is a binary file || (bat --style=numbers --color=always {} || cat {}) 2> /dev/null | head -300'
+#--bind='?:toggle-preview'
+#--bind='ctrl-a:select-all+accept'
+#--bind='ctrl-y:execute-silent(echo {+} | pbcopy)'
+#--bind 'ctrl-e:execute(echo {+} | xargs -o vim)'
+#        "
+##--preview-window='right:hidden:wrap'
+#        #export FZF_DEFAULT_COMMAND="rg --files --hidden --follow --glob '!.git'"
+#        FD_OPTIONS="--follow --exclude .git --exclude node_modules"
+#        # Use git-ls-files inside git repo, otherwise fd
+#        export FZF_DEFAULT_COMMAND="git ls-files --cached --others --exclude-standard | fd --type f --type l $FD_OPTIONS"
+#        export FZF_CTRL_T_COMMAND="fd $FD_OPTIONS"
+#        export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
+#    fi
+#    export BAT_PAGER="less -R"
+
+#else
+#	export IGOR_CONFIG_DIR=~
+#fi
 
 alias feh="feh --auto-rotate --scale-down -d -g 1024x768+600+200 --info \"exiv2 %F | grep -i -E 'camera model|timestamp|resolution'\""
 
