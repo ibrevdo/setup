@@ -1,0 +1,6 @@
+The path that I use for vim packages is:
+~/.vim/pack/git-plugins/start/
+
+I created this path when was installing vim-cpp-modern.
+The directory name git-plugins is arbitrary, you can pick any other name.
+For more details see :help packages.

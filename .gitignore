@@ -1,5 +1,4 @@
-config/vim/medium/autoload/
-config/vim/medium/plugged/
-config/vim/medium/pack/git-plugins/
+config/vim/*/autoload/
+config/vim/*/plugged/
+config/vim/*/pack/git-plugins/
 config/vim/from2021/
-config/vim/full/

@@ -3,6 +3,9 @@ setlocal commentstring=//\ %s
 setlocal nofoldenable foldmethod=indent foldlevelstart=99
 setlocal signcolumn=yes
 
+
+call SetAleMaps()
+
 "no enter after man page
 nnoremap <silent><buffer> K 	K<CR>
 vnoremap <silent><buffer> K 	K<CR>
@@ -13,14 +16,21 @@ nmap <silent><buffer> <F4>	:e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>
 "build and run (for single file programs)
 nmap <silent><buffer> <F5> :silent make %< <bar> !make %< && ./%< <cr>
 
-
-" call SetAleMaps()
-
 nmap <silent><buffer> <F6> :call Build()<CR>
 nmap <silent><buffer> <S-F6> :call Rebuild()<CR>
 
 command! CmakeRebuild !clear; rm -r build; mkdir build; cd build; cmake -DCAMKE_RULE_MESSAGES:BOOL=off .. <CR>
 
+" function! RunMake()
+" 	wall
+" 	if filereadable("./CMakeLists.txt") && filereadable("./build/Makefile")
+" 		silent make '--no-print-directory -C build' | redraw! | cc
+" 	elseif filereadable("./Makefile") || filereadable("./makefile")
+" 		silent make | redraw! | cc
+" 	elseif (&filetype == "cpp") || (&filetype == "c")
+" 		silent make %< | redraw! | cc
+" 	endif
+" endfunction
 
 if exists('*Build')
 	finish

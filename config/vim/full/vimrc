@@ -10,7 +10,7 @@ set complete-=i
 set pumheight=15
 set updatetime=400
 set wildmenu wildignorecase
-set wildignore+=*.o,*.pyc,*.so,*/.git/*,*/.cache/*
+set wildignore+=*.o,*.so,*/.git/*,*/.cache/*
 set wildmode=list:lastused,full
 set tags=./tags;,tags;./.tags;,.tags;
 set noswapfile nobackup noundofile
@@ -19,11 +19,11 @@ set completeopt=menu
 "set completeopt=longest,menuone "default: menu,preview
 set clipboard=unnamedplus	"use system clipboard
 
-" autocmd FileType markdown,text setlocal complete+=k/usr/share/dict/words
+autocmd FileType markdown,text setlocal complete+=k/usr/share/dict/words
 
 set laststatus=2
 set statusline=%f%m%=
-" set statusline+=%{LinterStatus()}
+set statusline+=%{LinterStatus()}
 set statusline+=\ %y\ Col:%2c\ %3l\/%L\ %2P
 
 set linebreak
@@ -44,12 +44,25 @@ if (has("termguicolors"))
 endif
 
 set grepprg=LC_ALL=C\ grep\ -nrsH
+if executable('ag')
+  set grepprg=ag
+endif
+
+" open quick window / location list when there some results
+" https://noahfrederick.com/log/vim-streamlining-grep
+augroup init_quickfix
+  autocmd!
+  autocmd QuickFixCmdPost [^l]* cwindow
+  autocmd QuickFixCmdPost l* lwindow
+  autocmd WinEnter * if winnr('$') == 1 && &buftype == "quickfix"|q|endif
+augroup END
 
 " press enter to choose the selection from completion menu
 "inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 let mapleader=" "
 
+nnoremap 0 	^
 nnoremap Y 	y$
 
 imap jk <Esc>
@@ -61,11 +74,24 @@ nmap <silent> <C-j> :wincmd j<CR>
 nmap <silent> <C-h> :wincmd h<CR>
 nmap <silent> <C-l> :wincmd l<CR>
 
+"find files
+"if don't want to alter the path, try: `:find **/*` instead
+nnoremap <leader>f  :find *
+nnoremap <leader>F  :sfind *
+
+"find buffer
+nnoremap <leader>b :ls<CR>:b<Space>
+
+"searching in files
+nnoremap <leader>s	:vimgrep //j **<left><left><left><left><left>
+nnoremap <leader>S	:silent grep!<space>
+
+
 " ---------------------------------------------------------
 " plugins config (pre)
 " ---------------------------------------------------------
-" runtime user/start.vim
-" runtime user/ale.vim
+runtime user/start.vim
+runtime user/ale.vim
 
 " load plugins
 "---------------------------------------------------------------
@@ -73,24 +99,23 @@ call plug#begin("~/.vim/plugged")
 Plug 'junegunn/vim-plug'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-vinegar'
 
 " Plug 'ackyshake/VimCompletesMe'
-" Plug 'ctrlpvim/ctrlp.vim'
+" Plug 'lifepillar/vim-mucomplete'
+Plug 'ctrlpvim/ctrlp.vim'
 " Plug 'sirver/UltiSnips'
-" Plug 'honza/vim-snippets'
-"Plug 'dense-analysis/ale'
+Plug 'honza/vim-snippets'
+Plug 'dense-analysis/ale'
 "Plug 'derekwyatt/vim-fswitch'
 "Plug 'ludovicchabant/vim-gutentags'
 "Plug 'preservim/tagbar'
 "Plug 'ivalkeen/vim-ctrlp-tjump'
 "Plug 'xavierd/clang_complete'
-Plug 'airblade/vim-gitgutter'
-Plug 'will133/vim-dirdiff'
 
-" Plug 'lambdalisue/fern.vim'
-" Plug 'lambdalisue/fern-hijack.vim'
-" Plug 'lambdalisue/fern-git-status.vim'
+Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/fern-hijack.vim'
+Plug 'lambdalisue/fern-git-status.vim'
+Plug 'airblade/vim-gitgutter'
 
 Plug 'romainl/Apprentice'
 Plug 'lifepillar/vim-gruvbox8'
@@ -114,8 +139,8 @@ endif
 
 " plugins config (post)
 "---------------------------------------------------------------
-"runtime user/plugins.vim
-" runtime user/fern.vim
+runtime user/plugins.vim
+runtime user/fern.vim
 
 filetype plugin indent on
 syntax on

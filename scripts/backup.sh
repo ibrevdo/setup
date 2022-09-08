@@ -53,11 +53,11 @@ function backup_winshare() {
 	echo $DATE > $WINSHARE_BACKUP/winshare.backup.time.txt
 }
 
-# if ! [ -d $LINUX_BACKUP ]; then
-# 	echo "$LINUX_BACKUP not mounted. Exiting"
-# 	exit
-# fi
-# backup_user
+if ! [ -d $LINUX_BACKUP ]; then
+	echo "$LINUX_BACKUP not mounted. Exiting"
+	exit
+fi
+backup_user
 
 if ! [ -d $WINSHARE_BACKUP ]; then
 	echo "$WINSHARE_BACKUP not mounted. Exiting"
