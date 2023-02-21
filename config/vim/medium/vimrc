@@ -10,10 +10,13 @@ set complete-=i
 set pumheight=15
 set updatetime=400
 set wildmenu wildignorecase
-set wildignore+=*.o,*.pyc,*.so,*/.git/*,*/.cache/*
+set wildignore+=*.o,*.pyc,*.so,*/.git/*,*/.cache/*,*/build/*
 set wildmode=list:lastused,full
-set tags=./tags;,tags;./.tags;,.tags;
+"set tags=./tags;,tags;./.tags;,.tags;
+set tags=./tags;,./.tags;   "the semicolon tells to search parent dirs also
 set noswapfile nobackup noundofile
+set nu rnu
+set signcolumn=number
 set mouse=a ttymouse=xterm2
 set completeopt=menu
 "set completeopt=longest,menuone "default: menu,preview
@@ -22,12 +25,19 @@ set clipboard=unnamedplus	"use system clipboard
 " autocmd FileType markdown,text setlocal complete+=k/usr/share/dict/words
 
 set laststatus=2
-set statusline=%f%m%=
-" set statusline+=%{LinterStatus()}
-set statusline+=\ %y\ Col:%2c\ %3l\/%L\ %2P
+" set statusline=%f%m%=
+" set statusline+=\ %y\ Col:%2c\ %3l\/%L\ %2P
+"set rulerformat=%m\ %l,%c%V%=%P
 
 set linebreak
 set showbreak=>>
+
+" autocmd FileType markdown   set spell spelllang=en_us     "en_us,de_de
+
+" start with nofoldenable. if needed, use zi
+set nofoldenable
+set foldmethod=indent foldcolumn=1 foldlevelstart=99 foldnestmax=3
+au filetype c,cpp,python   setlocal foldmethod=syntax foldnestmax=1 foldlevel=1 foldcolumn=1
 
 " set fillchars=vert:┃
 set diffopt+=vertical
@@ -48,24 +58,33 @@ set grepprg=LC_ALL=C\ grep\ -nrsH
 " press enter to choose the selection from completion menu
 "inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
-let mapleader=" "
+let mapleader=","
+let maplocalleader=","
 
 nnoremap Y 	y$
 
-imap jk <Esc>
-imap kj <Esc>
+nnoremap    <Space>   za
+
+" better use C-[
+" imap jk <Esc>
+" imap kj <Esc>
 
 "navigate around window splits with single key combo
-nmap <silent> <C-k> :wincmd k<CR>
-nmap <silent> <C-j> :wincmd j<CR>
-nmap <silent> <C-h> :wincmd h<CR>
-nmap <silent> <C-l> :wincmd l<CR>
+" better keep pressing C-w : it is convinient enough
+" nmap <silent> <C-k> :wincmd k<CR>
+" nmap <silent> <C-j> :wincmd j<CR>
+" nmap <silent> <C-h> :wincmd h<CR>
+" nmap <silent> <C-l> :wincmd l<CR>
+
+"no enter after man page
+nnoremap <silent><buffer> K 	K<CR>
+vnoremap <silent><buffer> K 	K<CR>
 
 " ---------------------------------------------------------
 " plugins config (pre)
 " ---------------------------------------------------------
-" runtime user/start.vim
-" runtime user/ale.vim
+runtime user/start.vim
+runtime user/ale.vim
 
 " load plugins
 "---------------------------------------------------------------
@@ -73,49 +92,75 @@ call plug#begin("~/.vim/plugged")
 Plug 'junegunn/vim-plug'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
+Plug 'godlygeek/tabular'
+Plug 'tmsvg/pear-tree'
+
 Plug 'tpope/vim-vinegar'
+"Plug 'will133/vim-dirdiff'
+"Plug 'vifm/vifm.vim'
 
 " Plug 'ackyshake/VimCompletesMe'
 " Plug 'ctrlpvim/ctrlp.vim'
-" Plug 'sirver/UltiSnips'
-" Plug 'honza/vim-snippets'
-"Plug 'dense-analysis/ale'
-"Plug 'derekwyatt/vim-fswitch'
-"Plug 'ludovicchabant/vim-gutentags'
-"Plug 'preservim/tagbar'
-"Plug 'ivalkeen/vim-ctrlp-tjump'
-"Plug 'xavierd/clang_complete'
-Plug 'airblade/vim-gitgutter'
-Plug 'will133/vim-dirdiff'
+" Plug 'ivalkeen/vim-ctrlp-tjump'
+" Plug 'preservim/tagbar'
+" Plug 'airblade/vim-gitgutter'
 
-" Plug 'lambdalisue/fern.vim'
-" Plug 'lambdalisue/fern-hijack.vim'
-" Plug 'lambdalisue/fern-git-status.vim'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'vim-scripts/OmniCppComplete'
+Plug 'dense-analysis/ale'
+Plug 'lervag/vimtex'
 
 Plug 'romainl/Apprentice'
 Plug 'lifepillar/vim-gruvbox8'
+
+if has("gui_running")
+    Plug 'preservim/nerdtree'
+    Plug 'preservim/vim-markdown'
+    Plug 'lifepillar/vim-solarized8'
+endif
+
 call plug#end()
 
 set background=dark
-colorscheme apprentice
+" colorscheme apprentice
+colorscheme solarized8
+let g:solarized_italics=0
 
 if has("gui_running")
-	set background=light
-	let g:gruvbox_italics = 0
-	colorscheme gruvbox8_hard
+	"set background=light
+    colorscheme solarized8
+    let g:solarized_italics=0
+    " let g:solarized_statusline='flat'
+	" let g:gruvbox_italics = 0
+	" colorscheme gruvbox8_hard
 	set guifont=DejaVu\ Sans\ Mono\ 12
 	set lines=40 columns=120
 	set guioptions -=m "disable menu
 	set guioptions -=T "disable toolbar
 	set guioptions -=r "disable right scroll
+    set guioptions -=l "disabe left scroll
+    set guioptions -=L
 	set mouse=a
 	"set guicursor+=a:blinkon0
+    
+    " for preservim/nerdtree
+    nnoremap \\ :NERDTreeToggle<CR>
+    let NERDTreeWinPos = 'right'
+    let NERDTreeMouseMode = 2   " single mouse click to reveal folder in NERDTree
+
+    " for preservim/vim-markdown
+    autocmd FileType markdown set conceallevel=2 
+                \ sidescroll=1 listchars+=extends:>,precedes:<
+                \ sidescrolloff=1
+    
 endif
 
 " plugins config (post)
 "---------------------------------------------------------------
-"runtime user/plugins.vim
-" runtime user/fern.vim
+runtime! ftplugin/man.vim
+runtime user/plugins.vim
 
 filetype plugin indent on
 syntax on

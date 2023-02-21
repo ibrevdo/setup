@@ -99,6 +99,7 @@ call plug#begin("~/.vim/plugged")
 Plug 'junegunn/vim-plug'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
+Plug 'tmsvg/pear-tree'
 
 " Plug 'ackyshake/VimCompletesMe'
 " Plug 'lifepillar/vim-mucomplete'

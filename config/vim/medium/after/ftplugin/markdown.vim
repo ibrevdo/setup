@@ -18,8 +18,5 @@ function! MarkdownFolds()
     return "="
 endfunction
 
-setlocal foldlevel=10
-setlocal foldlevelstart=10
-setlocal foldmethod=expr
-setlocal foldcolumn=3
 setlocal foldexpr=MarkdownFolds()
+setlocal foldmethod=expr

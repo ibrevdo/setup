@@ -14,7 +14,7 @@ function! FindProjectRoot(...)
         return len(a:s1) < len(a:s2) ? 1 : -1
     endfunc
 
-    for mkr in ['.git/', '.ccls', 'compile_flags.txt', 'compile_commands.json']
+    for mkr in ['Makefile', 'CMakeLists.txt','.git/', '.ccls']
         let isdir = mkr =~ '/$'
         let wd = call('find'.(isdir ? 'dir' : 'file'), [mkr, cph.';'])
 

@@ -31,3 +31,6 @@ if [ -d /home/mago/igorba/git/setup ]; then
 #export IGOR_SETUP_DIR=/home/mago/igorba/git/setup
 . /home/mago/igorba/git/setup/config/bash_config.sh
 fi
+
+
+#[ -f ~/.conda.bash ] && source ~/.conda.bash
