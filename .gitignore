@@ -1,4 +1,7 @@
-config/vim/*/autoload/
+config/vim/*/autoload/plug.vim
 config/vim/*/plugged/
+config/vim/*/colors/
+config/vim/*/spell/
 config/vim/*/pack/git-plugins/
 config/vim/from2021/
+.netrwhist

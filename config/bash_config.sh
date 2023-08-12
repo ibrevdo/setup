@@ -18,6 +18,10 @@ alias ll='ls -lh'
 alias la='ls -A'
 alias l='ls -CF'
 
+alias python='python3'
+alias pydoc='pydoc3'
+alias tt='taskwarrior-tui'
+
 # Default parameter to send to the "less" command
 # -R: show ANSI colors correctly; -i: case insensitive search
 LESS="-R -i"
@@ -75,10 +79,10 @@ export FZF_DEFAULT_OPTS='
 #	export IGOR_CONFIG_DIR=~
 #fi
 
-alias feh="feh --auto-rotate --scale-down -d -g 1024x768+600+200 --info \"exiv2 %F | grep -i -E 'camera model|timestamp|resolution'\""
-
-#alias vim=/home/rdev/installs/nvim.appimage
 #alias wiki_update='(cd ~/work/notes; python3 to_html.py )'
+
+alias vimb='vim --clean -u ~/vim/basic/vimrc -i ~/vim/basic/.viminfo'
+alias vimd='vim --clean -u ~/vim/devel/vimrc -i ~/vim/devel/.viminfo'
 
 parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'

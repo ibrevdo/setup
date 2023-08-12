@@ -8,13 +8,13 @@ setlocal signcolumn=yes
 command! -nargs=+ Cppman silent! call system("tmux split-window -b cppman " . expand(<q-args>))
 nnoremap <silent><buffer> K <Esc>:Cppman <cword><CR>
 
-call SetAleMaps()
+"call SetAleMaps()
 "set omnifunc=omni#cpp#complete#Main
 
-setlocal rulerformat=%m
-setlocal rulerformat+=%{LinterStatus()}
-setlocal rulerformat+=%{gutentags#statusline('_','_')}
-setlocal rulerformat+=\ %l,%c%V%=%P
+"setlocal rulerformat=%m
+"setlocal rulerformat+=%{LinterStatus()}
+"setlocal rulerformat+=%{gutentags#statusline('_','_')}
+"setlocal rulerformat+=\ %l,%c%V%=%P
 
 "switch to corresponding header/source file
 nmap <silent><buffer> <F4>	:e %:p:s,.h$,.X123X,:s,.cpp$,.h,:s,.X123X$,.cpp,<CR>

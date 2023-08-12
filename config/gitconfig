@@ -1,9 +1,18 @@
+# you can define ~/.gitconfig to include this file, like this:
+# [user]
+#     name = ibrevdo
+# [include]
+#     path = ~/igorba/git/setup/config/gitconfig
+# [core]
+#     excludesfile = ~/igorba/git/setup/config/gitignore
+
 [credential]
     helper = cache --timeout=3600
 [core]
     editor = vim
     autocrlf = input
     pager = less -FRSX
+    quotePath = false   #to handle utf-8 filenames
 [alias]
     #HEAD           - a pointer to a last commit of current branch
     #index          - local changes that were staged (by add )
@@ -23,4 +32,3 @@
     tool = meld
 [mergetool]
     cmd = meld $LOCAL $MERGED $REMOTE --output $MERGED
-
