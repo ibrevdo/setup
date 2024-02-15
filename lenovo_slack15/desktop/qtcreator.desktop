@@ -1,0 +1,17 @@
+[Desktop Entry]
+Comment[en_US]=
+Comment=
+Exec=/home/mago/installs/tools/qtcreator-4.12.2/bin/qtcreator
+Icon=/home/mago/installs/tools/qtcreator-4.12.2/share/doc/qtcreator/qtcreator/images/used-in-examples/transitions/qt-logo.png
+MimeType=
+Name[en_US]=qtcreator
+Name=qtcreator
+Path=/home/mago/installs/tools/qtcreator-4.12.2/bin
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=

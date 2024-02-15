@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=doom2
+Comment=
+Exec=prboom-plus -1 -width 1280 -height 720 -nofullscreen -iwad /usr/share/games/doom/Doom2.wad
+Icon=prboom-plus
+Path=
+Terminal=false
+StartupNotify=false

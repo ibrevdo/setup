@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=vnote
+Comment=
+Exec=/home/mago/installs/tools/vnote/vnote-linux-x64.appimage
+Icon=/home/mago/installs/tools/vnote/vnote.png
+Path=
+Terminal=false
+StartupNotify=false

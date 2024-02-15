@@ -1,0 +1,17 @@
+[Desktop Entry]
+Comment[en_US]=
+Comment=
+Exec=/home/mago/installs/tools/Umlet/umlet.sh
+Icon=/home/mago/installs/tools/Umlet/img/umlet_logo.png
+MimeType=
+Name[en_US]=Umlet
+Name=Umlet
+Path=/home/mago/installs/tools/Umlet/
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=

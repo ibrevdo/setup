@@ -1,0 +1,19 @@
+[Desktop Entry]
+Comment[en_GB]=
+Comment=
+Exec=/home/mago/installs/setup/launchers/sakura_tmux_dev.sh
+GenericName[en_GB]=
+GenericName=
+Icon=HandOpen
+MimeType=
+Name[en_GB]=dev
+Name=dev
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DBUS-ServiceName=
+X-DBUS-StartupType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=
