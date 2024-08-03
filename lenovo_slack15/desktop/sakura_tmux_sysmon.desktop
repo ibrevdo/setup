@@ -1,19 +1,7 @@
 [Desktop Entry]
-Comment[en_GB]=
-Comment=
-Exec=/home/mago/installs/setup/launchers/sakura_tmux_sysmon.sh
-GenericName[en_GB]=
-GenericName=
-Icon=application-x-ms-dos-executable
-MimeType=
-Name[en_GB]=sysmon
 Name=sysmon
-Path=
-StartupNotify=true
+Icon=filled-xterm
+Exec=sakura -c 80 -r 34 --config-file=sakura-sysmon --class=sakura-sysmon -t sysmon -x "bash -l -c ${HOME_SETUP}/lenovo_slack15/tmux/tmux_sysmon.sh"
 Terminal=false
-TerminalOptions=
 Type=Application
-X-DBUS-ServiceName=
-X-DBUS-StartupType=none
-X-KDE-SubstituteUID=false
-X-KDE-Username=
+StartupNotify=false

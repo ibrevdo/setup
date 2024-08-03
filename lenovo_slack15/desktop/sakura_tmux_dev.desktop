@@ -1,19 +1,10 @@
 [Desktop Entry]
-Comment[en_GB]=
-Comment=
-Exec=/home/mago/installs/setup/launchers/sakura_tmux_dev.sh
-GenericName[en_GB]=
-GenericName=
-Icon=HandOpen
-MimeType=
-Name[en_GB]=dev
 Name=dev
-Path=
-StartupNotify=true
-Terminal=false
-TerminalOptions=
+Comment=
+Exec=sakura -c 80 -r 34 --config-file=sakura-sysmon --class=sakura-sysmon -t dev -x "bash -l -c ${HOME_SETUP}/lenovo_slack15/tmux/tmux_dev.sh"
 Type=Application
-X-DBUS-ServiceName=
-X-DBUS-StartupType=
-X-KDE-SubstituteUID=false
-X-KDE-Username=
+Terminal=false
+Icon=HandOpen
+StartupNotify=false
+MimeType=
+Path=

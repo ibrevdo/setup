@@ -3,7 +3,12 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-# enable color support of ls
+# add some handy aliases
+alias ll='ls -lh'
+alias la='ls -A'
+alias l='ls -CF'
+
+# enable color support
 if [ -x /usr/bin/dircolors ]; then
     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
 
@@ -11,14 +16,15 @@ if [ -x /usr/bin/dircolors ]; then
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
+    alias diff='command diff --color=auto'
 fi
 
-# add some handy aliases
-alias ll='ls -lh'
-alias la='ls -A'
-alias l='ls -CF'
-
-alias tt='taskwarrior-tui'
+if [ -n "$INSIDE_EMACS" ]
+then
+    export TERM=ansi
+    export PAGER=cat
+    export MANPAGER=cat
+fi
 
 # Default parameter to send to the "less" command
 # -R: show ANSI colors correctly; -i: case insensitive search
@@ -38,34 +44,15 @@ fi
 
 export PS1="\u@\h \[\e[32m\]\w \[\e[91m\]\$(parse_git_branch)\[\e[00m\]\n$ "
 
-#alias wiki_update='(cd ~/work/notes; python3 to_html.py )'
-
-alias vimb='vim --clean -u ~/vim/basic/vimrc -i ~/vim/basic/.viminfo'
-alias vimd='vim --clean -u ~/vim/devel/vimrc -i ~/vim/devel/.viminfo'
+#alias vimb='vim --clean -u ~/vim/basic/vimrc -i ~/vim/basic/.viminfo'
+#alias vimd='vim --clean -u ~/vim/devel/vimrc -i ~/vim/devel/.viminfo'
 
 #alias e='emacs -nw -q -l ~/.emacs.1.d/init.el'
-#function ex() { emacs $@ & }
+#alias em='emacs -q --load $(ls ~/emacs_config | fzf)/init.el'
+
 alias e='emacs -nw'
-alias ex='emacs'
-alias em='emacs -q --load $(ls ~/emacs_config | fzf)/init.el'
-
-#alias ex='emacsclient.sh' # use these to run gui emacs with server
-#alias e='emacsclient -nw -a ""'
-alias es='emacsclient -e "(save-buffers-kill-emacs)"'
-#function es() { 
-#    emacsclient -e "(save-buffers-kill-emacs)"
-#}
-
-# config for shell-mode (M-x shell)
-if [ -n "$INSIDE_EMACS" ]
-then
-    export TERM=ansi
-    export PAGER=cat
-    export MANPAGER=cat
-    grep --version 2>/dev/null | grep GNU > /dev/null && alias grep='command grep --color=auto'
-    ls   --version 2>/dev/null | grep GNU > /dev/null && alias ls='command   ls   --color=auto'
-    diff --version 2>/dev/null | grep GNU > /dev/null && alias diff='command diff --color=auto'
-fi
+alias ex='emacsclient.sh -c' # use these to run gui emacs with server
+alias es='emacsclient.sh -s'
 
 function parse_git_branch() {
      git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'

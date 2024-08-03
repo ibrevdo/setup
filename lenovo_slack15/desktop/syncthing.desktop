@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Syncthing
+GenericName=File Synchronizer
+Comment=Sync your files across computers and to the web
+Exec=bash -l -c ${HOME_SETUP}/lenovo_slack15/scripts/syncthing_start.sh
+Terminal=false
+Type=Application
+Icon=emblem-synchronizing
+Categories=Network;FileTransfer;
+StartupNotify=false

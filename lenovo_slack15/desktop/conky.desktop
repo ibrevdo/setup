@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Conky
+GenericName=ConkyStartup
+Comment=System status
+Exec=/usr/bin/bash -c "/usr/bin/conky --pause=5 </dev/null &>/tmp/conky.log"
+Terminal=false
+Type=Application
+Icon=org.xfce.terminal
+Categories=SystemStatus
+StartupNotify=false

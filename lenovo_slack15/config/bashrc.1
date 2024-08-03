@@ -1,0 +1,144 @@
+#!/bin/bash
+
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+# this part is sourced by /etc/profile, but somehow looses it's effect during startx
+# so need to source it again
+if [ -x /etc/profile.d/bash_completion.sh ];  then
+   . /etc/profile.d/bash_completion.sh
+fi
+
+# if [ -f "$HOME"/.bash_config.sh ]; then
+#     . "$HOME"/.bash_config.sh
+# else
+#     echo "$HOME"/bash_config.sh is missing. Did you create the links?
+# fi
+
+########### IGOR CONFIG ####################
+
+# add some handy aliases
+alias ll='ls -lh'
+alias la='ls -A'
+alias l='ls -CF'
+
+export PS1="\u@\h \[\e[32m\]\w \[\e[91m\]\$(parse_git_branch)\[\e[00m\]\n$ "
+
+# enable color support
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+    alias diff='command diff --color=auto'
+fi
+
+# Default parameter to send to the "less" command
+# -R: show ANSI colors correctly; -i: case insensitive search
+LESS="-R -i"
+
+#so that less will use colored search and not italics
+export LESS_TERMCAP_se=$'\E[39;49m'
+export LESS_TERMCAP_so=$'\E[30;43m'
+
+# disable Ctrl-q/Ctrl-s in shell (unless execution of non-interactive shell)
+if [[ -t 0 && $- = *i* ]]; then
+    stty -ixon
+fi
+
+# Set Capslock as additional Ctrl key
+setxkbmap -option "ctrl:nocaps"
+
+# Set right alt as Compose key, the keys mappings are defined in ~/.XCompose
+# Now the umlaute can be inserted like this: ralt + a = ä
+[ -f ~/.XCompose ] && setxkbmap -option compose:ralt
+
+setxkbmap -layout us,il,ru
+
+
+#alias vimb='vim --clean -u ~/vim/basic/vimrc -i ~/vim/basic/.viminfo'
+#alias vimd='vim --clean -u ~/vim/devel/vimrc -i ~/vim/devel/.viminfo'
+
+#alias e='emacs -nw -q -l ~/.emacs.1.d/init.el'
+#alias em='emacs -q --load $(ls ~/emacs_config | fzf)/init.el'
+
+alias fehh='feh -Texif'
+alias idic='less ~/igorba/git/setup/common/dic/Mueller.dic | grep'
+
+################## ADD TO PATH #################
+
+# Add sbin directories to PATH.  This is useful on systems that have sudo
+echo $PATH | grep -Eq "(^|:)/sbin(:|)"     || export PATH=$PATH:/sbin
+echo $PATH | grep -Eq "(^|:)/usr/sbin(:|)" || export PATH=$PATH:/usr/sbin
+
+# Add user dirctories to the path
+if [[ ! "$PATH" == *"$HOME"/.local/bin* ]]; then
+	export PATH=~/.local/bin:$PATH
+fi
+
+# Add user dirctories to the path
+if [[ ! "$PATH" == *"$HOME"/installs/setup/scripts* ]]; then
+    export PATH=$PATH:${HOME}/installs/setup/scripts
+fi
+
+# Add user dirctories to the path
+# if [[ ! "$PATH" == *"$HOME"/tools/llvm/bin* ]]; then
+#     export PATH=$PATH:${HOME}/tools/llvm/bin
+# fi
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+#. "$HOME/.cargo/env"
+
+#[ -f ~/.conda.bash ] && source ~/.conda.bash
+
+
+################## EMACS #######################
+
+#alias e='emacs -nw'
+export EDITOR='emacs -Q -nw --eval="(progn (menu-bar-mode -1) (load-theme '\''modus-vivendi t))"'
+alias e=$EDITOR
+alias se="sudo $EDITOR"
+alias ex='emacsclient.sh -c' # use these to run gui emacs with server
+alias es='emacsclient.sh -s'
+
+# for running shell inside emacs
+if [ -n "$INSIDE_EMACS" ]
+then
+    export TERM=ansi
+    export PAGER=cat
+    export MANPAGER=cat
+fi
+
+
+############### FUNCTIONS ##################
+
+function parse_git_branch() {
+     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/(\1)/'
+}
+
+function g {
+    if [ -z $(gvim --serverlist) ]; then
+        gvim $@ >/dev/null 2>&1
+    else
+        [ $# -gt 0 ] \
+		&& gvim --remote-silent $@ \
+		|| gvim --remote-send ':sil call foreground()<CR>'
+    fi
+}
+
+function create_cpp_proj {
+    if [ -f .ccls ]; then
+        echo ".ccls already exists"
+        return 1
+    fi
+
+    cat <<- EOF > .ccls
+clang
+% -std=c++14
+%h -x
+% c++-header
+EOF
+
+}

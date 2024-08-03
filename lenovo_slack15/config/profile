@@ -6,24 +6,60 @@
 # for ssh logins, install and configure the libpam-umask package.
 #umask 022
 
-# igor: this file is sourced when the user is logged in (before startx).
-# but after startx, some of the configuration is lost,
-# so I moved all config to .bashrc which is sourced every time the terminal emulator of X
-# is started.
-# the only purpose of this file, is to source .bashrc, when logining into runlevel 3 or
-# when connecting to this computer with ssh
+# Add to path
+export PATH="$PATH:/sbin:/usr/sbin:$HOME/.local/bin"
 
-#export MESA_LOADER_DRIVER_OVERRIDE=i965
+# Define location of my scripts and desktop launchers
+export HOME_SETUP="$HOME/igorba/git/setup"
 
-# if running bash
-if [ -n "$BASH_VERSION" ]; then
-    # include .bashrc if it exists
-    if [ -f "$HOME/.bashrc" ]; then
-		. "$HOME/.bashrc"
-    fi
+# disable Ctrl-q/Ctrl-s in shell (unless execution of non-interactive shell)
+if [[ -t 0 && $- = *i* ]]; then
+    stty -ixon
 fi
 
-# moved to .Xmodmap file
-# map CapsLock to the Esc
-# xmodmap -e 'clear Lock' -e 'keycode 0x42 = Escape'
+#if [ `id -un` = root ]; then
+#   PS1='\[\033[1;31m\]\h:\w\$\[\033[0m\] '
+# else
+#   PS1='\[\033[1;32m\]\h:\w\$\[\033[0m\] '
+#fi
+# less be more verbose on status line
 
+export LESS="-M -R"
+
+export EDITOR='emacs -Q -nw --eval="(progn (menu-bar-mode -1) (load-theme '\''modus-vivendi t))"'
+
+# Add color
+eval `dircolors -b`
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
+alias diff='command diff --color=auto'
+
+
+alias et=$EDITOR
+alias ett="sudo $EDITOR"
+alias e='emacsclient -r -n -a ""'
+alias ex='emacsclient -c -n -a ""'
+alias es='emacsclient -e "(kill-emacs)"'
+
+alias fehh='feh -Texif'
+alias idic='less ~/igorba/git/setup/common/dic/Mueller.dic | grep'
+
+########################### BASHRC ######################
+
+#if [ -f "$HOME/.bashrc" ]; then
+#    . "$HOME/.bashrc"
+#fi
+
+
+########################## XCONFIG ###########################
+
+#from: man xkeyboard-config
+setxkbmap -layout us,il,ru -option grp:shifts_toggle,ctrl:swapcaps,compose:ralt
+
+# if /usr/bin/pgrep syncthing >/dev/null; then
+#     echo "Syncthing already running"
+# else
+#     echo "Starting Syncthing.."
+#     syncthing -no-browser 1>/dev/null 2>&1 &
+#     echo "Access Syncthing at http://127.0.0.1:8384"
+# fi
