@@ -1,6 +1,7 @@
 # you can define ~/.gitconfig to include this file, like this:
 # [user]
-#     name = ibrevdo
+#     name = xxx
+#     email = xxx@gmail.com
 # [include]
 #     path = ~/igorba/git/setup/config/gitconfig
 # [core]
