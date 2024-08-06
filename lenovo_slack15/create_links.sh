@@ -18,7 +18,7 @@ rm ~/.config/sakura; ln -sv ${COMMON}/config/sakura ~/.config/sakura
 rm ~/.config/feh; ln -sv ${COMMON}/common/config/feh ~/.config/feh
 
 # handle templates
-sed -i 's/XDG_TEMPLATES_DIR=.*/XDG_TEMPLATES_DIR="${HOME_SETUP}\/common\/templates"/' ~/.config/user-dirs.dirs
+sed -i "s@XDG_TEMPLATES_DIR=.*@XDG_TEMPLATES_DIR=\"${HOME_SETUP}/common/templates\"@" ~/.config/user-dirs.dirs
 
 function create_link() {
     rm -r $2
