@@ -3,17 +3,17 @@ rfs --full-screen --randomize
 fs  --full-screen --sort filename
 
 exif --draw-filename --draw-tinted --scale-down -g 1024x768+600+200 \
-        --fontpath /usr/share/fonts/TTF/ --font DejaVuSansMono/10 \
-        --sort filename --info ";jhead %F" -B darkgray
+     --fontpath /usr/share/fonts/TTF/ --font DejaVuSansMono/10 \
+     --sort filename --info ";jhead %F" -B darkgray
 
 thumb --draw-filename --draw-tinted --scale-down -g 1024x768+600+200 \
-            --fontpath /usr/share/fonts/TTF/ --font DejaVuSansMono/8 \
-            --info ";jhead %F" -B black \
-            --thumbnails --cache-thumbnails --thumb-width 128 --thumb-height 128 \
-            --limit-width 1024 --sort filename
+      --fontpath /usr/share/fonts/TTF/ --font DejaVuSansMono/8 \
+      --info ";jhead %F" -B black \
+      --thumbnails --cache-thumbnails --thumb-width 128 --thumb-height 128 \
+      --limit-width 1024 --sort filename
 
 thumb_b --draw-filename --draw-tinted --scale-down -g 1024x768+600+200 \
-            --fontpath /usr/share/fonts/TTF/ --font DejaVuSansMono/8 \
-            --info ";jhead %F" -B black \
-            --thumbnails --cache-thumbnails --thumb-width 256 --thumb-height 256 \
-            --limit-width 1536 --sort filename
+        --fontpath /usr/share/fonts/TTF/ --font DejaVuSansMono/8 \
+        --info ";jhead %F" -B black \
+        --thumbnails --cache-thumbnails --thumb-width 256 --thumb-height 256 \
+        --limit-width 1536 --sort filename
