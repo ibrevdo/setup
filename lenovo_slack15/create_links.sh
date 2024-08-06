@@ -1,24 +1,24 @@
 #!/bin/bash
 
 CWD=$(pwd)
+cd ../common
+COMMON=$(pwd)
 
 # config files
-rm ~/.profile; ln -sv ${CWD}/config/profile ~/.profile
-rm ~/.tmux.conf; ln -sv ${CWD}/config/tmux.conf ~/.tmux.conf
+rm ~/.bash_profile; ln -sv ${COMMON}/config/bash_profile ~/.bash_profile
+rm ~/.gitconfig; ln -sv ${COMMON}/config/gitconfig ~/.gitconfig
+rm ~/.tmux.conf; ln -sv ${COMMON}/config/tmux.conf ~/.tmux.conf
+rm ~/.emacs.d; ln -sv ${COMMON}/config/emacs.d ~/.emacs.d
+rm ~/.conkyrc; ln -sv ${COMMON}/config/conkyrc ~/.conkyrc
 rm ~/.vim; ln -sv ${CWD}/config/vim/devel ~/.vim
-#rm ~/.bashrc; ln -sv ${CWD}/config/bashrc ~/.bashrc
-#rm ~/.bash_profile; ln -sv ${CWD}/config/bash_profile ~/.bash_profile
-#rm ~/.bash_config.sh; ln -sv ${CWD}/config/bash_config.sh ~/.bash_config.sh
-rm ~/.conkyrc; ln -sv ${CWD}/config/conkyrc ~/.conkyrc
 #rm ~/.Xmodmap; ln -sv ${CWD}/config/Xmodmap ~/.Xmodmap
 #rm ~/.XCompose; ln -sv ${CWD}/config/XCompose ~/.XCompose
 #rm ~/.config/vifm; ln -sv ${CWD}/config/vifm ~/.config/vifm
-rm ~/.config/sakura; ln -sv ${CWD}/config/sakura ~/.config/sakura
-rm ~/.config/feh; ln -sv ${CWD}/../common/config/feh ~/.config/feh
+rm ~/.config/sakura; ln -sv ${COMMON}/config/sakura ~/.config/sakura
+rm ~/.config/feh; ln -sv ${COMMON}/common/config/feh ~/.config/feh
 
-# ~/.gitconfig is created separately according to example in config/gitconfig
-#ln -s ~/igorba/git/setup/config/gitconfig
-#ln -s ~/igorba/git/setup/config/gitignore
+# handle templates
+sed -i 's/XDG_TEMPLATES_DIR=.*/XDG_TEMPLATES_DIR="${HOME_SETUP}\/common\/templates"/' ~/.config/user-dirs.dirs
 
 function create_link() {
     rm -r $2

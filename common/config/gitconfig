@@ -1,0 +1,7 @@
+[user]
+    name = ibrevdo
+    email = snapir@posteo.net
+[merge]
+    conflictStyle = diff3
+[alias]
+    tree = log --graph --decorate --pretty=oneline --abbrev-commit --all
