@@ -56,9 +56,12 @@
 
 (setq recentf-max-saved-items 1000)
 (recentf-mode)
-(global-set-key (kbd "C-c r") 'recentf)
 
-(global-set-key (kbd "C-c p") 'find-file-at-point)
+(global-set-key (kbd "C-c o r") 'recentf)
+(global-set-key (kbd "C-c o p") 'find-file-at-point)
+(global-set-key (kbd "C-c t SPC") 'whitespace-mode)
+(global-set-key (kbd "C-c t s") 'flyspell-mode)
+
 
 ;;; Whitespace mode
 (defun rc/set-up-whitespace-handling ()
@@ -66,18 +69,9 @@
   (whitespace-mode 1)
   (add-to-list 'write-file-functions 'delete-trailing-whitespace))
 
-(setq whitespace-style '(face tabs spaces trailing space-before-tab newline indentation empty space-after-tab space-mark tab-mark))
+(setq whitespace-style '(face trailing tabs tab-mark))
 
-(add-hook 'c-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'c++-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'emacs-lisp-mode 'rc/set-up-whitespace-handling)
-(add-hook 'python-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'java-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'yaml-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'lua-mode-hook 'rc/set-up-whitespace-handling)
-;;(add-hook 'markdown-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'go-mode-hook 'rc/set-up-whitespace-handling)
-(add-hook 'nim-mode-hook 'rc/set-up-whitespace-handling)
+(add-hook 'prog-mode-hook 'rc/set-up-whitespace-handling)
 
 ;;; dired
 (require 'dired-x)
