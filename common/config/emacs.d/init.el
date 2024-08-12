@@ -33,7 +33,7 @@
 (scroll-bar-mode 0)
 (column-number-mode 1)
 (show-paren-mode 1)
-(global-auto-revert-mode 1)
+;;(global-auto-revert-mode 1)
 (delete-selection-mode)
 (save-place-mode 1)
 (savehist-mode 1)
