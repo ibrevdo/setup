@@ -18,7 +18,7 @@ fi
 # less be more verbose on status line
 export LESS="-M -R"
 
-export EDITOR='emacs -Q -nw --eval="(progn (menu-bar-mode -1) (load-theme '\''modus-vivendi t))"'
+EMACS='emacs -Q -nw --eval="(progn (menu-bar-mode -1) (load-theme '\''modus-vivendi t))"'
 
 # Add color
 eval `dircolors -b`
@@ -27,8 +27,8 @@ alias grep='grep --color=auto'
 alias diff='command diff --color=auto'
 
 
-alias et=$EDITOR
-alias ett="sudo $EDITOR"
+alias et=$EMACS
+alias ett="sudo $EMACS"
 alias e='emacsclient -r -n -a ""'
 alias ex='emacsclient -c -n -a ""'
 alias es='emacsclient -e "(kill-emacs)"'
