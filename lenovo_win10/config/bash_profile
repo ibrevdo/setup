@@ -1,0 +1,4 @@
+alias python='winpty python.exe'
+
+alias e='emacsclientw.exe -r -n -a ""'
+alias ex='emacsclientw.exe -c -n -a ""'
