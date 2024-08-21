@@ -52,7 +52,18 @@
               use-short-answers t
               search-whitespace-regexp ".*?"
               vc-follow-symlinks t
-              set-mark-command-repeat-pop t)
+              set-mark-command-repeat-pop t
+              confirm-kill-emacs 'y-or-n-p)
+
+;;; completion
+(setq completion-auto-select nil
+      ;; completion-auto-select 'second-tab
+      ;; tab-always-indent 'complete
+      completions-max-height 20
+      completions-header-format nil
+      completions-format 'one-column
+      )
+
 
 (setq recentf-max-saved-items 1000)
 (recentf-mode)
@@ -80,10 +91,20 @@
 (setq-default dired-dwim-target t)
 (setq dired-listing-switches "-alh")
 
+;;; deadgrep
+(rc/require 'deadgrep)
+(setq deadgrep-max-buffers 1)
+
 ;;; vertico
 (rc/require 'vertico 'marginalia)
 (vertico-mode)
 (marginalia-mode)
+
+;;; orderless
+(rc/require 'orderless)
+(require 'orderless)
+(setq completion-styles '(orderless basic)
+      completion-category-overrides '((file (styles basic partial-completion))))
 
 ;;; Move Text
 (rc/require 'move-text)
@@ -120,15 +141,10 @@
              (python (if (executable-find "python3") "python3" "python")))
     (compile (concat python " " (shell-quote-argument file-name)))))
 
-(add-hook 'python-mode-hook (lambda () (local-set-key (kbd "<f5>" 'rc/run-py-file))))
+;;(add-hook 'python-mode-hook (lambda () (local-set-key (kbd "<f5>" 'rc/run-py-file))))
 
 (require 'ansi-color)
-(defun rc/colorize-compilation-buffer ()
-  (toggle-read-only)
-  (ansi-color-apply-on-region compilation-filter-start (point))
-  (toggle-read-only))
-(add-hook 'compilation-filter-hook 'rc/colorize-compilation-buffer)
-
+(add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
 ;;; eldoc mode
 (defun rc/turn-on-eldoc-mode ()
@@ -172,7 +188,10 @@
 
 (rc/require
  'cmake-mode
- 'yaml-mode)
+ 'yaml-mode
+;; 'elpy
+ 'lua-mode
+ 'dockerfile-mode)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
