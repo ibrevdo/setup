@@ -8,28 +8,31 @@ SOURCE=$(cd $HOME; pwd)
 # backup to
 USER=$(whoami)
 LINUX_BACKUP="/run/media/$USER/linux/backup/slackware15/"
-#WINSHARE_BACKUP="/run/media/$USER/winshare/backup/"
 
 function backup_user() {
     mkdir -p $LINUX_BACKUP/$USER
     rsync -avz --progress --delete --delete-excluded \
-        $SOURCE/Desktop \
-        $SOURCE/Dropbox \
-        $SOURCE/igorba  \
-        $SOURCE/installs \
-        $LINUX_BACKUP/$USER/
+          $SOURCE/Desktop \
+          $SOURCE/Dropbox \
+          $SOURCE/Downloads \
+          $SOURCE/igorba  \
+          $SOURCE/installs \
+          $LINUX_BACKUP/$USER/
 
     mkdir -p $LINUX_BACKUP/$USER/dotfiles/ssh
     cp -rv $SOURCE/.ssh/*       $LINUX_BACKUP/$USER/dotfiles/ssh
 }
 
 function backup_media() {
-    rsync -avz --progress --delete --delete-excluded \
-        --exclude=torrent    \
-        --exclude=tmp       \
-        /mnt/igor_media/media   \
-        $LINUX_BACKUP/
-
+    mkdir -p $LINUX_BACKUP/media
+    MEDIA_SOURCE=/mnt/igor_media/media
+    rsync -avz --progress --delete \
+          $MEDIA_SOURCE/books \
+          $MEDIA_SOURCE/downloads \
+          $MEDIA_SOURCE/music \
+          $MEDIA_SOURCE/phone \
+          $MEDIA_SOURCE/photos \
+        $LINUX_BACKUP/media/
 }
 
 function backup_root {
@@ -48,7 +51,7 @@ EOF
 
 
 if ! [ -d $LINUX_BACKUP ]; then
-    echo "$LINUX_BACKUP not mounted. Exiting"
+    echo "Is $LINUX_BACKUP mounted?"
     exit
 else
     backup_user
@@ -58,4 +61,3 @@ else
 fi
 
 sync
-
