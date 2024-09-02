@@ -1,4 +1,7 @@
-
+;; init.el --- emacs init file -*- lexical-binding: t; -*-
+;;; Commentary:
+;; ibrevdo
+;;; Code: test
 
 (require 'server)
 (unless (server-running-p)
@@ -57,32 +60,53 @@
 
 ;;; completion
 (setq completion-auto-select nil
-      ;; completion-auto-select 'second-tab
       ;; tab-always-indent 'complete
+      ;; completion-auto-select 'second-tab
       completions-max-height 20
       completions-header-format nil
       completions-format 'one-column
       )
 
-
 (setq recentf-max-saved-items 1000)
 (recentf-mode)
 
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 (global-set-key (kbd "C-c o r") 'recentf)
-(global-set-key (kbd "C-c o p") 'find-file-at-point)
+(global-set-key (kbd "C-c o f") 'find-file-at-point)
 (global-set-key (kbd "C-c t SPC") 'whitespace-mode)
 (global-set-key (kbd "C-c t s") 'flyspell-mode)
+(global-set-key (kbd "C-c t l") 'hl-line-mode)
+(global-set-key (kbd "C-c t f") 'display-fill-column-indicator-mode)
+(global-set-key (kbd "C-,") 'duplicate-dwim)
+(global-set-key (kbd "M-s g") 'deadgrep)
 
-
-;;; Whitespace mode
-(defun rc/set-up-whitespace-handling ()
+(defun rc/revert-this-buffer ()
   (interactive)
-  (whitespace-mode 1)
-  (add-to-list 'write-file-functions 'delete-trailing-whitespace))
+  (revert-buffer nil t t)
+  (message (concat "Reverted buffer " (buffer-name))))
+(global-set-key (kbd "C-x C-r") 'rc/revert-this-buffer)
 
-(setq whitespace-style '(face trailing tabs tab-mark))
+(defun rc/switch-to-previous-buffer ()
+  (interactive)
+  (switch-to-buffer (other-buffer)))
+(global-set-key (kbd "C-z") 'rc/switch-to-previous-buffer)
 
-(add-hook 'prog-mode-hook 'rc/set-up-whitespace-handling)
+;;; Windmove
+(setq windmove-create-window t)
+(global-set-key (kbd "C-x w b") 'windmove-left)
+(global-set-key (kbd "C-x w n") 'windmove-down)
+(global-set-key (kbd "C-x w p") 'windmove-up)
+(global-set-key (kbd "C-x w f") 'windmove-right)
+(global-set-key (kbd "C-x w B") 'windmove-swap-states-left)
+(global-set-key (kbd "C-x w N") 'windmove-swap-states-down)
+(global-set-key (kbd "C-x w P") 'windmove-swap-states-up)
+(global-set-key (kbd "C-x w F") 'windmove-swap-states-right)
+
+;; ;;; Winner-mode
+(setq winner-dont-bind-my-keys t)
+(global-set-key (kbd "C-x w w") 'winner-undo)
+(global-set-key (kbd "C-x w W") 'winner-redo)
+(winner-mode)
 
 ;;; dired
 (require 'dired-x)
@@ -90,39 +114,7 @@
       (concat dired-omit-files "\\|^\\..+$"))
 (setq-default dired-dwim-target t)
 (setq dired-listing-switches "-alh")
-
-;;; deadgrep
-(rc/require 'deadgrep)
-(setq deadgrep-max-buffers 1)
-
-;;; vertico
-(rc/require 'vertico 'marginalia)
-(vertico-mode)
-(marginalia-mode)
-
-;;; orderless
-(rc/require 'orderless)
-(require 'orderless)
-(setq completion-styles '(orderless basic)
-      completion-category-overrides '((file (styles basic partial-completion))))
-
-;;; Move Text
-(rc/require 'move-text)
-(global-set-key (kbd "M-p") 'move-text-up)
-(global-set-key (kbd "M-n") 'move-text-down)
-
-;;; iedit
-(rc/require 'iedit)
-(global-set-key (kbd "C-;") 'iedit-mode)
-
-;;; magit
-;; magit requres this lib, but it is not installed automatically on
-;; Windows.
-(rc/require 'cl-lib)
-(rc/require 'magit)
-
-(global-set-key (kbd "C-c m s") 'magit-status)
-(global-set-key (kbd "C-c m l") 'magit-log)
+(setq dired-kill-when-opening-new-dired-buffer t)
 
 ;;; c-mode
 (setq-default c-basic-offset 4
@@ -143,15 +135,73 @@
 
 ;;(add-hook 'python-mode-hook (lambda () (local-set-key (kbd "<f5>" 'rc/run-py-file))))
 
+;;; Whitespace mode
+(defun rc/set-up-whitespace-handling ()
+  (interactive)
+  (whitespace-mode 1)
+  (add-to-list 'write-file-functions 'delete-trailing-whitespace))
+(setq whitespace-style '(face trailing tabs tab-mark))
+(add-hook 'prog-mode-hook 'rc/set-up-whitespace-handling)
+
 (require 'ansi-color)
 (add-hook 'compilation-filter-hook 'ansi-color-compilation-filter)
 
-;;; eldoc mode
-(defun rc/turn-on-eldoc-mode ()
-  (interactive)
-  (eldoc-mode 1))
+;; ediff
+(setq ediff-split-window-function 'split-window-horizontally)
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
 
-(add-hook 'emacs-lisp-mode-hook 'rc/turn-on-eldoc-mode)
+
+
+;;; External packages
+(rc/require
+ 'cmake-mode
+ 'yaml-mode
+;; 'elpy
+ 'lua-mode
+ 'dockerfile-mode)
+
+;;; deadgrep
+(rc/require 'deadgrep)
+(setq deadgrep-max-buffers 1)
+
+;;; vertico
+(rc/require 'vertico 'marginalia)
+(vertico-mode)
+(marginalia-mode)
+
+;;; orderless
+(rc/require 'orderless)
+(require 'orderless)
+(setq completion-styles '(orderless basic)
+      completion-category-overrides '((file (styles basic partial-completion))))
+
+;;; Move Text
+(rc/require 'move-text)
+(move-text-default-bindings)            ; M-up/down
+
+;;; iedit
+(rc/require 'iedit)
+(global-set-key (kbd "C-;") 'iedit-mode)
+(defun rc/iedit-dwim ()
+  "Select a single thing for iedit-mode."
+  (interactive)
+  (iedit-mode 1))
+(global-set-key (kbd "M-n") 'rc/iedit-dwim)
+(global-set-key (kbd "M-p") 'rc/iedit-dwim)
+
+
+;;; Expand region
+(rc/require 'expand-region)
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+;;; Magit
+;; magit requres this lib, but it is not installed automatically on Windows.
+(rc/require 'cl-lib)
+(rc/require 'magit)
+(setq magit-ediff-dwim-show-on-hunks t)
+(global-set-key (kbd "C-c g s") 'magit-status)
+(global-set-key (kbd "C-c g l") 'magit-log)
 
 ;;; markdown mode
 (rc/require 'markdown-mode)
@@ -186,13 +236,6 @@
       (concat "\\.\\(docx\\|odt\\|ods\\|pdf\\)$\\|" howm-excluded-file-regexp))
 
 
-(rc/require
- 'cmake-mode
- 'yaml-mode
-;; 'elpy
- 'lua-mode
- 'dockerfile-mode)
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (custom-set-variables
@@ -207,3 +250,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+
+
+;;; init.el ends here
