@@ -40,12 +40,6 @@ alias idic="less ${HOME_SETUP}/common/dic/Mueller.dic | grep "
 #fi
 
 
-########################## XCONFIG ###########################
-
-#from: man xkeyboard-config
-setxkbmap -layout us,il,ru -option grp:shifts_toggle,ctrl:swapcaps,compose:ralt
-
-
 ######################### GIT ################################
 
 function parse_git_dirty {

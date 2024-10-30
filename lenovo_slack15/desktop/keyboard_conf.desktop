@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Keyboard config
+Comment=Run keyboard configuration for X
+Exec=bash -l -c ${HOME_SETUP}/lenovo_slack15/scripts/keyboard_config.sh
+Terminal=false
+Type=Application
+StartupNotify=false
+Icon=keyboard

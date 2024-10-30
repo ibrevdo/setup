@@ -68,3 +68,4 @@ create_link "${CWD}/desktop/conky.desktop" "${DEST1}/conky.desktop"
 DEST1=~/.config/autostart
 create_link "${CWD}/desktop/syncthing.desktop" "${DEST1}/syncthing.desktop"
 create_link "${CWD}/desktop/conky.desktop" "${DEST1}/conky.desktop"
+create_link "${CWD}/desktop/keyboard_conf.desktop" "${DEST1}/keyboard_conf.desktop"
