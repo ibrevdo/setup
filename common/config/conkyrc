@@ -78,7 +78,6 @@ ${voffset 20}${color1}${font :size=14:bold}CPU ${hr 2}${font}
 ${voffset 5}${color1}Name : ${color3}$alignr${execi 6000 cat /proc/cpuinfo | grep 'model name' | sed -e 's/model name.*: //'| uniq | cut -d' ' -f 3-}
 ${voffset 2}${color1}Usage : ${color3}${cpu}%$alignr${color1}Freq : ${color3}${freq_g} GHz
 ${voffset 2}${color2}${cpugraph 40,280}
-
 #------------+
 #CPU CORES
 #------------+
@@ -91,28 +90,31 @@ ${voffset 2}${color1} 3${goto 45}${color3}${cpu cpu3}%${goto 85}${color2}${cpuba
 ${voffset 5}${color1}TEMPS ${stippled_hr 2 2}
 ${voffset 5}${color1}CPU : ${color3}${execi 5 sensors | grep "Core 0:" | cut -d "+" -f 2 | cut -d " " -f 1}
 #------------+
+# MEMORY
+#------------+
+${voffset 10}${color1}${font :size=14:bold}MEMORY ${hr 2}${font}
+${voffset 5}${color1}Used: ${color3}$mem ($memperc%)${color1}${alignr}Free: ${color3}$memeasyfree
+${color2}${membar}
+#------------+
 # PROCESSES
 #------------+
-${voffset 10}${color1}PROCESSES ${stippled_hr 2 2}
+${voffset 10}${color1}${font :size=14:bold}PROCESSES ${hr 2}${font}
 ${voffset 5}${color1}Name${goto 180}CPU%${alignr}MEM%
 ${color2}${top name 1} ${goto 180}${top cpu 1}${alignr}${top mem 1}${color3}
 ${top name 2} ${goto 180}${top cpu 2}${alignr}${top mem 2}
 ${top name 3} ${goto 180}${top cpu 3}${alignr}${top mem 3}
 ${top name 4} ${goto 180}${top cpu 4}${alignr}${top mem 4}
 ${top name 5} ${goto 180}${top cpu 5}${alignr}${top mem 5}
-#------------+
-# MEMORY
-#------------+
-${voffset 10}${color1}${font :size=14:bold}MEMORY ${hr 2}${font}
-${voffset 5}${color1}Used: ${color3}$mem ($memperc%)${color1}${alignr}Free: ${color3}$memeasyfree
-${color2}${membar}
+${voffset 10}${color1}Memory ${stippled_hr 2 2}
 ${voffset 5}${color1}Name${goto 180}MEM%${alignr}MEM
 ${color2}${top_mem name 1} ${goto 180}${top_mem mem 1}${alignr}${top_mem mem_res 1}${color3}
 ${top_mem name 2} ${goto 180}${top_mem mem 2}${alignr}${top_mem mem_res 2}
 ${top_mem name 3} ${goto 180}${top_mem mem 3}${alignr}${top_mem mem_res 3}
 ${top_mem name 4} ${goto 180}${top_mem mem 4}${alignr}${top_mem mem_res 4}
 ${top_mem name 5} ${goto 180}${top_mem mem 5}${alignr}${top_mem mem_res 5}
+#------------+
 # NVME
+#------------+
 ${voffset 10}${color1}${font :size=14:bold}HDD ${hr 2}${font}
 ${voffset 5}${color1}Linux partion ${stippled_hr 3 3}
 ${voffset 5}${color1}Used: ${color3}${fs_used /}${color1}${goto 200}Free:${goto 250}${color3}${fs_free /}
@@ -120,12 +122,13 @@ ${color2}${fs_bar /}
 ${voffset 5}${color1}Media partion ${stippled_hr 3 3}
 ${voffset 5}${color1}Used: ${color3}${fs_used /mnt/igor_media}${color1}${goto 200}Free:${goto 250}${color3}${fs_free /mnt/igor_media}
 ${color2}${fs_bar /mnt/igor_media}
+${voffset 5}${color1}Disk Speed (100 KiB/s) ${stippled_hr 3 3}
 ${voffset 2}${color1}Write: ${color3}${diskio_write nvme0n1}${goto 200}${color1}Read:${goto 250}${color3}${diskio_read nvme0n1}
-${color2}${diskiograph_write nvme0n1 40,130}${alignr}${diskiograph_read nvme0n1 40,130}
+${color2}${diskiograph_write nvme0n1 40,130 1e5}${alignr}${diskiograph_read nvme0n1 40,130 1e5}
 #------------+
 # NETWORK
 #------------+
-${voffset 10}${color1}${font :size=14:bold}NETWORK ${hr 2}${font}
+${voffset 5}${color1}NETWORK (1 MB/s) ${hr 2}${font}
 ${voffset 5}${color3}Down: ${downspeedf wlan0} KiB/s${alignr}Up: ${upspeedf wlan0} KiB/s
-${color2}${downspeedgraph wlan0 40,130 5e5}$alignr${upspeedgraph wlan0 40,130 1e5}
+${color2}${downspeedgraph wlan0 40,130 1e6}$alignr${upspeedgraph wlan0 40,130 1e6}
 ]]
