@@ -41,10 +41,16 @@
 (save-place-mode 1)
 (savehist-mode 1)
 (pixel-scroll-precision-mode)
-(global-display-line-numbers-mode)
+(global-display-line-numbers-mode 1)
 
 
 (setq-default inhibit-splash-screen t
+              ;; initial-major-mode 'fundamental-mode
+              ;; initial-scratch-message ""
+              ;; truncate-lines 1
+              ;; user-email-address "snapir@posteo.net"
+              ;; user-full-name "Igor B"
+              create-lockfiles 0
               make-backup-files nil
               tab-width 4
               indent-tabs-mode nil
@@ -71,14 +77,18 @@
 (recentf-mode)
 
 (global-set-key (kbd "C-x C-b") 'ibuffer)
+(global-set-key (kbd "C-c C-d") 'delete-pair)
 (global-set-key (kbd "C-c o r") 'recentf)
 (global-set-key (kbd "C-c o f") 'find-file-at-point)
-(global-set-key (kbd "C-c t SPC") 'whitespace-mode)
 (global-set-key (kbd "C-c t s") 'flyspell-mode)
 (global-set-key (kbd "C-c t l") 'hl-line-mode)
 (global-set-key (kbd "C-c t f") 'display-fill-column-indicator-mode)
+(global-set-key (kbd "C-c t v") 'visible-mode)
+(global-set-key (kbd "C-c t SPC") 'whitespace-mode)
 (global-set-key (kbd "C-,") 'duplicate-dwim)
 (global-set-key (kbd "M-s g") 'deadgrep)
+(global-set-key (kbd "C-z") 'undo)
+(global-set-key (kbd "M-o") #'other-window)
 
 (defun rc/revert-this-buffer ()
   (interactive)
@@ -89,7 +99,7 @@
 (defun rc/switch-to-previous-buffer ()
   (interactive)
   (switch-to-buffer (other-buffer)))
-(global-set-key (kbd "C-z") 'rc/switch-to-previous-buffer)
+;;(global-set-key (kbd "C-z") 'rc/switch-to-previous-buffer)
 
 ;;; Windmove
 (setq windmove-create-window t)
@@ -149,7 +159,7 @@
 ;; ediff
 (setq ediff-split-window-function 'split-window-horizontally)
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
-
+(setq-default ediff-forward-word-function 'forward-char)
 
 
 ;;; External packages
@@ -207,6 +217,9 @@
 (rc/require 'markdown-mode)
 (setq markdown-fontify-code-blocks-natively t)
 (setq markdown-unordered-list-item-prefix "  - ")
+(add-hook 'markdown-mode-hook
+          (lambda () (setq-local bidi-paragraph-direction 'left-to-right)))
+
 
 ;;; word-wrap
 (defun rc/enable-word-wrap ()
@@ -220,7 +233,7 @@
 (require 'howm)
 
 (setq howm-directory "~/igorba/git/info/notes/")   ; Path to the system files
-(setq howm-file-name-format "%Y/%m/%Y-%m-%d-%H%M%S.md")
+(setq howm-file-name-format "%Y/%m/%Y-%m-%d-%H%M%S.org")
 (setq howm-home-directory "~/igorba/git/info/notes/")
 (setq howm-keyword-file (expand-file-name ".howm-keys" howm-home-directory))
 (setq howm-history-file (expand-file-name ".howm-history" howm-home-directory))
@@ -235,22 +248,31 @@
 (setq howm-excluded-file-regexp
       (concat "\\.\\(docx\\|odt\\|ods\\|pdf\\)$\\|" howm-excluded-file-regexp))
 
+;; (use-package howm
+;;   :init (setq howm-view-title-header "*")
+;;   (setq howm-file-name-format "%Y/%m/%Y-%m-%d-%H%M%S.org"))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages '(dash-functional dash)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
+;; orgmode
+(setq org-export-with-sub-superscripts '{}
+      org-export-headline-levels 4
+      org-export-with-section-numbers nil
+      org-export-preserve-breaks t
+      org-export-with-title nil
+      org-export-date-timestamp-format "%Y-%m-%d")
+(setq org-html-doctype "html5"
+      org-html-html5-fancy t
+      org-html-checkbox-type 'html
+      org-html-validation-link nil
+      org-html-metadata-timestamp-format "%Y-%m-%d")
+(setq org-html-head-include-default-style nil
+      org-html-htmlize-output-type 'css)
+(setq org-html-style
+      (concat "<style type=\"text/css\">\n"
+              (with-temp-buffer
+                (insert-file-contents
+                 (locate-user-emacs-file "org-export/gray.css"))
+                (buffer-string))
+              "</style>\n"))
 
 
 ;;; init.el ends here
